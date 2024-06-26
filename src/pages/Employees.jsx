@@ -38,6 +38,44 @@ const Employees = () => {
     setEmployees(values);
   };
 
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch('/api/employees', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(employees),
+      });
+      if (response.ok) {
+        console.log('Employees submitted successfully');
+      } else {
+        console.error('Failed to submit employees');
+      }
+    } catch (error) {
+      console.error('Error submitting employees:', error);
+    }
+  };
+
+  const handleUpdate = async (index) => {
+    try {
+      const response = await fetch(`/api/employees/${index}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(employees[index]),
+      });
+      if (response.ok) {
+        console.log('Employee updated successfully');
+      } else {
+        console.error('Failed to update employee');
+      }
+    } catch (error) {
+      console.error('Error updating employee:', error);
+    }
+  };
+
   return (
     <Box p={4}>
       <VStack spacing={4}>
@@ -66,9 +104,11 @@ const Employees = () => {
               <Input type="text" name="contract" value={employee.contract} onChange={(event) => handleEmployeeChange(empIndex, event)} />
             </FormControl>
             <Button colorScheme="red" onClick={() => handleRemoveEmployee(empIndex)}>Remove Employee</Button>
+            <Button colorScheme="yellow" onClick={() => handleUpdate(empIndex)}>Update</Button>
           </Box>
         ))}
         <Button colorScheme="teal" onClick={handleAddEmployee}>Add Employee</Button>
+        <Button colorScheme="blue" onClick={handleSubmit}>Submit</Button>
       </VStack>
     </Box>
   );
