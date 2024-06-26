@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const Shifts = () => {
-  const [shifts, setShifts] = useState([{ name: "", startTime: new Date(), endTime: new Date(), locations: [""], requiredSkills: "", rosterLength: "" }]);
+  const [shifts, setShifts] = useState([{ name: "", startTime: new Date(), endTime: new Date(), locations: [""], requiredSkills: "" }]);
 
   const handleChange = (index, event) => {
     const values = [...shifts];
@@ -17,7 +17,7 @@ const Shifts = () => {
   };
 
   const handleAdd = () => {
-    setShifts([...shifts, { name: "", startTime: new Date(), endTime: new Date(), locations: [""], requiredSkills: "", rosterLength: "" }]);
+    setShifts([...shifts, { name: "", startTime: new Date(), endTime: new Date(), locations: [""], requiredSkills: "" }]);
   };
 
   const handleRemove = (index) => {
@@ -55,11 +55,11 @@ const Shifts = () => {
             </FormControl>
             <FormControl id={`startTime-${index}`} mb={2}>
               <FormLabel>Start Time</FormLabel>
-              <DatePicker selected={shift.startTime} onChange={(date) => handleChange(index, { name: "startTime", value: date })} showTimeSelect dateFormat="Pp" />
+              <DatePicker selected={shift.startTime} onChange={(date) => handleChange(index, { name: "startTime", value: date })} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption="Time" dateFormat="h:mm aa" />
             </FormControl>
             <FormControl id={`endTime-${index}`} mb={2}>
               <FormLabel>End Time</FormLabel>
-              <DatePicker selected={shift.endTime} onChange={(date) => handleChange(index, { name: "endTime", value: date })} showTimeSelect dateFormat="Pp" />
+              <DatePicker selected={shift.endTime} onChange={(date) => handleChange(index, { name: "endTime", value: date })} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption="Time" dateFormat="h:mm aa" />
             </FormControl>
             {shift.locations.map((location, locIndex) => (
               <HStack key={locIndex} mb={2}>
@@ -74,10 +74,6 @@ const Shifts = () => {
             <FormControl id={`requiredSkills-${index}`} mb={2}>
               <FormLabel>Required Skills</FormLabel>
               <Input type="text" name="requiredSkills" value={shift.requiredSkills} onChange={(event) => handleChange(index, event)} />
-            </FormControl>
-            <FormControl id={`rosterLength-${index}`} mb={2}>
-              <FormLabel>Roster Length (days)</FormLabel>
-              <Input type="number" name="rosterLength" value={shift.rosterLength} onChange={(event) => handleChange(index, event)} />
             </FormControl>
             <Button colorScheme="red" onClick={() => handleRemove(index)}>Remove Shift</Button>
           </Box>

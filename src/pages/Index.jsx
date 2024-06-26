@@ -1,4 +1,4 @@
-import { Container, Text, VStack } from "@chakra-ui/react";
+import { Container, Text, VStack, Image } from "@chakra-ui/react";
 
 const Index = () => {
   return (
