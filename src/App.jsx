@@ -5,6 +5,7 @@ import Shifts from "./pages/Shifts.jsx";
 import Contracts from "./pages/Contracts.jsx";
 import RosterLength from "./pages/RosterLength.jsx";
 import Navbar from "./components/Navbar.jsx";
+import Schedule from "./pages/Schedule.jsx";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route exact path="/shifts" element={<Shifts />} />
         <Route exact path="/contracts" element={<Contracts />} />
         <Route exact path="/roster-length" element={<RosterLength />} />
+        <Route exact path="/schedule" element={<Schedule />} />
       </Routes>
     </Router>
   );

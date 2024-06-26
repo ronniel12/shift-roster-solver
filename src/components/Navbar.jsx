@@ -21,6 +21,9 @@ const Navbar = () => {
           <Link as={NavLink} to="/roster-length" px={2} py={1} rounded="md" _hover={{ textDecoration: 'none', bg: 'teal.700' }} _activeLink={{ bg: 'teal.700' }}>
             Roster Length
           </Link>
+          <Link as={NavLink} to="/schedule" px={2} py={1} rounded="md" _hover={{ textDecoration: 'none', bg: 'teal.700' }} _activeLink={{ bg: 'teal.700' }}>
+            Schedule
+          </Link>
         </Box>
       </Flex>
     </Box>

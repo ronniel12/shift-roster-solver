@@ -20,6 +20,44 @@ const Contracts = () => {
     setContracts(values);
   };
 
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch('/api/contracts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(contracts),
+      });
+      if (response.ok) {
+        console.log('Contracts submitted successfully');
+      } else {
+        console.error('Failed to submit contracts');
+      }
+    } catch (error) {
+      console.error('Error submitting contracts:', error);
+    }
+  };
+
+  const handleUpdate = async (index) => {
+    try {
+      const response = await fetch(`/api/contracts/${index}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(contracts[index]),
+      });
+      if (response.ok) {
+        console.log('Contract updated successfully');
+      } else {
+        console.error('Failed to update contract');
+      }
+    } catch (error) {
+      console.error('Error updating contract:', error);
+    }
+  };
+
   return (
     <Box p={4}>
       <VStack spacing={4}>
@@ -38,9 +76,11 @@ const Contracts = () => {
               <Input type="number" name="maxHours" value={contract.maxHours} onChange={(event) => handleContractChange(index, event)} />
             </FormControl>
             <Button colorScheme="red" onClick={() => handleRemoveContract(index)}>Remove Contract</Button>
+            <Button colorScheme="yellow" onClick={() => handleUpdate(index)}>Update</Button>
           </Box>
         ))}
         <Button colorScheme="teal" onClick={handleAddContract}>Add Contract</Button>
+        <Button colorScheme="blue" onClick={handleSubmit}>Submit</Button>
       </VStack>
     </Box>
   );

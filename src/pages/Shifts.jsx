@@ -44,6 +44,44 @@ const Shifts = () => {
     setShifts(values);
   };
 
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch('/api/shifts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(shifts),
+      });
+      if (response.ok) {
+        console.log('Shifts submitted successfully');
+      } else {
+        console.error('Failed to submit shifts');
+      }
+    } catch (error) {
+      console.error('Error submitting shifts:', error);
+    }
+  };
+
+  const handleUpdate = async (index) => {
+    try {
+      const response = await fetch(`/api/shifts/${index}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(shifts[index]),
+      });
+      if (response.ok) {
+        console.log('Shift updated successfully');
+      } else {
+        console.error('Failed to update shift');
+      }
+    } catch (error) {
+      console.error('Error updating shift:', error);
+    }
+  };
+
   return (
     <Box p={4}>
       <VStack spacing={4}>
@@ -75,10 +113,12 @@ const Shifts = () => {
               <FormLabel>Required Skills</FormLabel>
               <Input type="text" name="requiredSkills" value={shift.requiredSkills} onChange={(event) => handleChange(index, event)} />
             </FormControl>
+            <Button colorScheme="yellow" onClick={() => handleUpdate(index)}>Update</Button>
             <Button colorScheme="red" onClick={() => handleRemove(index)}>Remove Shift</Button>
           </Box>
         ))}
         <Button colorScheme="teal" onClick={handleAdd}>Add Shift</Button>
+        <Button colorScheme="blue" onClick={handleSubmit}>Submit</Button>
       </VStack>
     </Box>
   );
