@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const Shifts = () => {
-  const [shifts, setShifts] = useState([{ name: "", startTime: new Date(), endTime: new Date(), locations: [""], requiredSkills: "" }]);
+  const [shifts, setShifts] = useState([{ name: "", startTime: new Date(), endTime: new Date(), locations: [{ name: "", requiredSkills: [""] }] }]);
 
   const handleChange = (index, event) => {
     const values = [...shifts];
@@ -17,7 +17,7 @@ const Shifts = () => {
   };
 
   const handleAdd = () => {
-    setShifts([...shifts, { name: "", startTime: new Date(), endTime: new Date(), locations: [""], requiredSkills: "" }]);
+    setShifts([...shifts, { name: "", startTime: new Date(), endTime: new Date(), locations: [{ name: "", requiredSkills: [""] }] }]);
   };
 
   const handleRemove = (index) => {
@@ -28,7 +28,7 @@ const Shifts = () => {
 
   const handleAddLocation = (index) => {
     const values = [...shifts];
-    values[index].locations.push("");
+    values[index].locations.push({ name: "", requiredSkills: [""] });
     setShifts(values);
   };
 
@@ -40,7 +40,25 @@ const Shifts = () => {
 
   const handleLocationChange = (shiftIndex, locationIndex, event) => {
     const values = [...shifts];
-    values[shiftIndex].locations[locationIndex] = event.target.value;
+    values[shiftIndex].locations[locationIndex].name = event.target.value;
+    setShifts(values);
+  };
+
+  const handleAddSkill = (shiftIndex, locationIndex) => {
+    const values = [...shifts];
+    values[shiftIndex].locations[locationIndex].requiredSkills.push("");
+    setShifts(values);
+  };
+
+  const handleRemoveSkill = (shiftIndex, locationIndex, skillIndex) => {
+    const values = [...shifts];
+    values[shiftIndex].locations[locationIndex].requiredSkills.splice(skillIndex, 1);
+    setShifts(values);
+  };
+
+  const handleSkillChange = (shiftIndex, locationIndex, skillIndex, event) => {
+    const values = [...shifts];
+    values[shiftIndex].locations[locationIndex].requiredSkills[skillIndex] = event.target.value;
     setShifts(values);
   };
 
@@ -100,19 +118,27 @@ const Shifts = () => {
               <DatePicker selected={shift.endTime} onChange={(date) => handleChange(index, { name: "endTime", value: date })} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption="Time" dateFormat="h:mm aa" />
             </FormControl>
             {shift.locations.map((location, locIndex) => (
-              <HStack key={locIndex} mb={2}>
-                <FormControl id={`location-${index}-${locIndex}`}>
-                  <FormLabel>Location</FormLabel>
-                  <Input type="text" value={location} onChange={(event) => handleLocationChange(index, locIndex, event)} />
-                </FormControl>
-                <Button colorScheme="red" onClick={() => handleRemoveLocation(index, locIndex)}>Remove Location</Button>
-              </HStack>
+              <Box key={locIndex} mb={4} p={4} borderWidth="1px" borderRadius="lg">
+                <HStack mb={2}>
+                  <FormControl id={`location-${index}-${locIndex}`}>
+                    <FormLabel>Location</FormLabel>
+                    <Input type="text" value={location.name} onChange={(event) => handleLocationChange(index, locIndex, event)} />
+                  </FormControl>
+                  <Button colorScheme="red" onClick={() => handleRemoveLocation(index, locIndex)}>Remove Location</Button>
+                </HStack>
+                {location.requiredSkills.map((skill, skillIndex) => (
+                  <HStack key={skillIndex} mb={2}>
+                    <FormControl id={`skill-${index}-${locIndex}-${skillIndex}`}>
+                      <FormLabel>Required Skill</FormLabel>
+                      <Input type="text" value={skill} onChange={(event) => handleSkillChange(index, locIndex, skillIndex, event)} />
+                    </FormControl>
+                    <Button colorScheme="red" onClick={() => handleRemoveSkill(index, locIndex, skillIndex)}>Remove Skill</Button>
+                  </HStack>
+                ))}
+                <Button colorScheme="teal" onClick={() => handleAddSkill(index, locIndex)}>Add Skill</Button>
+              </Box>
             ))}
             <Button colorScheme="teal" onClick={() => handleAddLocation(index)}>Add Location</Button>
-            <FormControl id={`requiredSkills-${index}`} mb={2}>
-              <FormLabel>Required Skills</FormLabel>
-              <Input type="text" name="requiredSkills" value={shift.requiredSkills} onChange={(event) => handleChange(index, event)} />
-            </FormControl>
             <Button colorScheme="yellow" onClick={() => handleUpdate(index)}>Update</Button>
             <Button colorScheme="red" onClick={() => handleRemove(index)}>Remove Shift</Button>
           </Box>
